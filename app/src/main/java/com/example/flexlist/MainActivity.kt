@@ -1,27 +1,44 @@
 package com.example.flexlist
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MainActivity : AppCompatActivity() {
+    lateinit var recyclerView: RecyclerView
 
 
-    var toDoLists = mutableListOf<ToDoList>(
-        ToDoList("Brush Teath",false),
-        ToDoList("well",false),
-        ToDoList("hello",false),
 
-    )
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        var recyclerView = findViewById<RecyclerView>(R.id.listRecycle)
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        val taskAddButton = findViewById<FloatingActionButton>(R.id.addTaskFloatingButton)
 
-        val adapter = ToDoListRecyclerAdapter(this,toDoLists)
-        recyclerView.adapter = adapter
+         recyclerView = findViewById<RecyclerView>(R.id.listRecycle)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = ToDoListRecyclerAdapter(this,DataManager.item)
+       // val adapter = ToDoListRecyclerAdapter(this,toDoLists)
+
+        taskAddButton.setOnClickListener {
+            val intent = Intent(this,CreateAndEditTaskActivity::class.java)
+            startActivity(intent)
+
+        }
+
     }
+
+
+
+
+    override fun onResume() {
+        super.onResume()
+
+        recyclerView.adapter?.notifyDataSetChanged()
+
+    }
+
 }

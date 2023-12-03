@@ -8,13 +8,19 @@ import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class ToDoListRecyclerAdapter(val context: Context, val lists: List<ToDoList>)  : RecyclerView.Adapter<ToDoListRecyclerAdapter.ViewHolder>(){
+class ToDoListRecyclerAdapter(val context: Context, var lists: List<ToDoList>)  : RecyclerView.Adapter<ToDoListRecyclerAdapter.ViewHolder>(){
 
         var layoutInflater = LayoutInflater.from(context)
 
     inner class ViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
         var itemNameView = itemView.findViewById<TextView>(R.id.itemNameTextView)
         var checkBox = itemView.findViewById<CheckBox>(R.id.itemNameCheckBox)
+
+        init {
+
+
+        }
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -27,7 +33,7 @@ class ToDoListRecyclerAdapter(val context: Context, val lists: List<ToDoList>)  
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-       val itemList = lists[position]
+       var itemList = lists[position]
        holder.itemNameView.text = itemList.itemName
        holder.checkBox.isChecked = itemList.checkBox
     }
