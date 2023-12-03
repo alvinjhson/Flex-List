@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import java.text.FieldPosition
 
 const val ITEM_POSISTION_KEY = "ITEM_POSISTION"
@@ -15,9 +16,11 @@ class CreateAndEditTaskActivity : AppCompatActivity() {
 
     lateinit var nameEditText: EditText
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_and_edit_task)
+        val delete = findViewById<ImageButton>(R.id.removeItemButton)
         nameEditText = findViewById(R.id.editTextText)
         val saveButton = findViewById<Button>(R.id.saveButton)
         val itemPosistion = intent.getIntExtra(ITEM_POSISTION_KEY, POSISTION_NOT_SET)
@@ -26,6 +29,11 @@ class CreateAndEditTaskActivity : AppCompatActivity() {
             displayItem(itemPosistion)
             saveButton.setOnClickListener {
                 editItem(itemPosistion)
+            }
+            delete.setOnClickListener {
+                removeItem(itemPosistion)
+
+
             }
         }else {
             saveButton.setOnClickListener {
@@ -51,6 +59,12 @@ class CreateAndEditTaskActivity : AppCompatActivity() {
         val item = ToDoList(name,check)
         DataManager.item.add(item)
         finish()
+
+    }
+    fun removeItem(position: Int) {
+        DataManager.item.removeAt(position)
+        val intent = Intent(this,MainActivity::class.java)
+        startActivity(intent)
 
     }
 }

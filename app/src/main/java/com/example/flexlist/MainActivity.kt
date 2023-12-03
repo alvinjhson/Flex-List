@@ -16,11 +16,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
+
         val taskAddButton = findViewById<FloatingActionButton>(R.id.addTaskFloatingButton)
 
          recyclerView = findViewById<RecyclerView>(R.id.listRecycle)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = ToDoListRecyclerAdapter(this,DataManager.item)
+
 
 
         taskAddButton.setOnClickListener {
