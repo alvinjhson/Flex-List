@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import java.text.FieldPosition
 
 const val ITEM_POSISTION_KEY = "ITEM_POSISTION"
 
@@ -21,14 +22,35 @@ class CreateAndEditTaskActivity : AppCompatActivity() {
         val saveButton = findViewById<Button>(R.id.saveButton)
         val itemPosistion = intent.getIntExtra(ITEM_POSISTION_KEY, POSISTION_NOT_SET)
 
-
-        saveButton.setOnClickListener {
-            val name = nameEditText.text.toString()
-            val check = false
-            val item = ToDoList(name,check)
-            DataManager.item.add(item)
-            finish()
+        if (itemPosistion != POSISTION_NOT_SET) {
+            displayItem(itemPosistion)
+            saveButton.setOnClickListener {
+                editItem(itemPosistion)
+            }
+        }else {
+            saveButton.setOnClickListener {
+                addItem()
+            }
         }
+
+    }
+
+    fun editItem(position: Int) {
+        DataManager.item[position].itemName = nameEditText.toString()
+        finish()
+
+    }
+
+    fun displayItem(position : Int) {
+        val item = DataManager.item[position]
+        nameEditText.setText(item.itemName)
+    }
+    fun addItem() {
+        val name = nameEditText.text.toString()
+        val check = false
+        val item = ToDoList(name,check)
+        DataManager.item.add(item)
+        finish()
 
     }
 }
