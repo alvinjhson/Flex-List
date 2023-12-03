@@ -1,6 +1,7 @@
 package com.example.flexlist
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,8 +16,15 @@ class ToDoListRecyclerAdapter(val context: Context, var lists: List<ToDoList>)  
     inner class ViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
         var itemNameView = itemView.findViewById<TextView>(R.id.itemNameTextView)
         var checkBox = itemView.findViewById<CheckBox>(R.id.itemNameCheckBox)
+        var itemPosistion = 0
+
 
         init {
+            itemView.setOnClickListener {
+                val intent = Intent(context,CreateAndEditTaskActivity::class.java)
+                intent.putExtra(ITEM_POSISTION_KEY,itemPosistion)
+                context.startActivity(intent)
+            }
 
 
         }
@@ -36,6 +44,7 @@ class ToDoListRecyclerAdapter(val context: Context, var lists: List<ToDoList>)  
        var itemList = lists[position]
        holder.itemNameView.text = itemList.itemName
        holder.checkBox.isChecked = itemList.checkBox
+       holder.itemPosistion = position
     }
 
 

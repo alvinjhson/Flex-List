@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
          recyclerView = findViewById<RecyclerView>(R.id.listRecycle)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = ToDoListRecyclerAdapter(this,DataManager.item)
-       // val adapter = ToDoListRecyclerAdapter(this,toDoLists)
+
 
         taskAddButton.setOnClickListener {
             val intent = Intent(this,CreateAndEditTaskActivity::class.java)
