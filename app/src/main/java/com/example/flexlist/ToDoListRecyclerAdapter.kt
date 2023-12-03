@@ -6,16 +6,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+
 
 class ToDoListRecyclerAdapter(val context: Context, var lists: List<ToDoList>)  : RecyclerView.Adapter<ToDoListRecyclerAdapter.ViewHolder>(){
 
         var layoutInflater = LayoutInflater.from(context)
 
+
     inner class ViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
         var itemNameView = itemView.findViewById<TextView>(R.id.itemNameTextView)
         var checkBox = itemView.findViewById<CheckBox>(R.id.itemNameCheckBox)
+        val deleteButton = itemView.findViewById<ImageButton>(R.id.removeItemButton)
         var itemPosistion = 0
 
 
@@ -25,6 +29,11 @@ class ToDoListRecyclerAdapter(val context: Context, var lists: List<ToDoList>)  
                 intent.putExtra(ITEM_POSISTION_KEY,itemPosistion)
                 context.startActivity(intent)
             }
+            //deleteButton.setOnClickListener {
+                //removeItem(itemPosistion)
+
+            //}
+
 
 
         }
@@ -35,6 +44,11 @@ class ToDoListRecyclerAdapter(val context: Context, var lists: List<ToDoList>)  
         val itemView = layoutInflater.inflate(R.layout.list_item,parent,false)
         return ViewHolder(itemView)
     }
+    //fun removeItem(position: Int) {
+       // DataManager.item.removeAt(position)
+       // notifyDataSetChanged()
+    //}
+
 
     override fun getItemCount(): Int {
         return lists.size
@@ -46,6 +60,7 @@ class ToDoListRecyclerAdapter(val context: Context, var lists: List<ToDoList>)  
        holder.checkBox.isChecked = itemList.checkBox
        holder.itemPosistion = position
     }
+
 
 
 }
