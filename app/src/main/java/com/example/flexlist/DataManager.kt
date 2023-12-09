@@ -13,7 +13,7 @@ object DataManager {
 
 
     fun createMockData() {
-        item.add(ToDoList("Brush",false))
+        item.add(ToDoList("Brush","",false))
 
 
 
