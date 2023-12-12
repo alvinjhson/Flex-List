@@ -24,11 +24,16 @@ class CreateAndEditTaskActivity : AppCompatActivity() {
         nameEditText = findViewById(R.id.editTextText)
         val saveButton = findViewById<Button>(R.id.saveButton)
         val itemPosistion = intent.getIntExtra(ITEM_POSISTION_KEY, POSISTION_NOT_SET)
+        val setTime = findViewById<Button>(R.id.setTimeButton)
 
         if (itemPosistion != POSISTION_NOT_SET) {
             displayItem(itemPosistion)
             saveButton.setOnClickListener {
                 editItem(itemPosistion)
+            }
+            setTime.setOnClickListener {
+                val intent = Intent(this,TimeActivity::class.java)
+                startActivity(intent)
             }
             delete.setOnClickListener {
                 removeItem(itemPosistion)
@@ -44,7 +49,7 @@ class CreateAndEditTaskActivity : AppCompatActivity() {
     }
 
     fun editItem(position: Int) {
-        DataManager.item[position].itemName = nameEditText.toString()
+        DataManager.item[position].itemName = nameEditText.text.toString()
         finish()
 
     }
@@ -56,15 +61,22 @@ class CreateAndEditTaskActivity : AppCompatActivity() {
     fun addItem() {
         val name = nameEditText.text.toString()
         val check = false
-        val item = ToDoList(name,check)
+        val item = ToDoList(name,"",check)
         DataManager.item.add(item)
         finish()
 
     }
     fun removeItem(position: Int) {
         DataManager.item.removeAt(position)
-        val intent = Intent(this,MainActivity::class.java)
-        startActivity(intent)
+        finish()
+        //val intent = Intent(this,MainActivity::class.java)
+        //startActivity(intent)
+    }
+    fun addTime(position: Int) {
+        //DataManager.item[position].time =
+
 
     }
+
+
 }
