@@ -20,6 +20,7 @@ class ToDoListRecyclerAdapter(val context: Context, var lists: List<ToDoList>)  
         var itemNameView = itemView.findViewById<TextView>(R.id.itemNameTextView)
         var checkBox = itemView.findViewById<CheckBox>(R.id.itemNameCheckBox)
         var itemPosistion = 0
+        var timeTextView = itemView.findViewById<TextView>(R.id.timeTextView2)
 
 
         init {
@@ -49,6 +50,7 @@ class ToDoListRecyclerAdapter(val context: Context, var lists: List<ToDoList>)  
        holder.itemNameView.text = itemList.itemName
        holder.checkBox.isChecked = itemList.checkBox
        holder.itemPosistion = position
+       holder.timeTextView.text = itemList.time
     }
 
 }
