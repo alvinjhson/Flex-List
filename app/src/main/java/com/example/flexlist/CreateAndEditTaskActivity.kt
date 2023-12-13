@@ -1,16 +1,20 @@
 package com.example.flexlist
 
 import android.app.Activity
+import android.app.TimePickerDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.TextView
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 import java.text.FieldPosition
+import java.time.LocalTime
 
 const val ITEM_POSISTION_KEY = "ITEM_POSISTION"
 
@@ -22,6 +26,8 @@ class CreateAndEditTaskActivity : AppCompatActivity() {
 
 
     lateinit var nameEditText: EditText
+    lateinit var timeImageView : ImageView
+    lateinit var timeTextView1 : TextView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,21 +38,20 @@ class CreateAndEditTaskActivity : AppCompatActivity() {
         db = Firebase.firestore
         val delete = findViewById<ImageButton>(R.id.removeItemButton)
         nameEditText = findViewById(R.id.editTextText)
+        timeImageView = findViewById(R.id.timeImageView)
+        timeTextView1 = findViewById(R.id.timeTextView1)
         val saveButton = findViewById<Button>(R.id.saveButton)
         val itemPosistion = intent.getIntExtra(ITEM_POSISTION_KEY, POSISTION_NOT_SET)
         val setTime = findViewById<Button>(R.id.setTimeButton)
-
-
-
 
         if (itemPosistion != POSISTION_NOT_SET) {
             displayItem(itemPosistion)
             saveButton.setOnClickListener {
                 editItem(itemPosistion)
+
             }
-            setTime.setOnClickListener {
-                val intent = Intent(this,TimeActivity::class.java)
-                startActivity(intent)
+            timeImageView.setOnClickListener {
+                changeTime(itemPosistion)
             }
             delete.setOnClickListener {
                 removeItem(itemPosistion)
@@ -54,6 +59,18 @@ class CreateAndEditTaskActivity : AppCompatActivity() {
 
             }
         }else {
+            timeImageView.setOnClickListener {
+                val timePickerDialog = TimePickerDialog(this,
+                    { _, hourOfDay, minute ->
+                        val formattedTime = String.format("%02d:%02d", hourOfDay, minute)
+                        timeTextView1.text = formattedTime
+                    },
+                    LocalTime.now().hour,
+                    LocalTime.now().minute,
+                    true
+                )
+                timePickerDialog.show()
+            }
             saveButton.setOnClickListener {
 
                 addItem()
@@ -72,12 +89,14 @@ class CreateAndEditTaskActivity : AppCompatActivity() {
     fun displayItem(position : Int) {
         val item = DataManager.item[position]
         nameEditText.setText(item.itemName)
+        timeTextView1.setText(item.time)
     }
 
     fun addItem() {
         val name = nameEditText.text.toString()
         val check = false
-        val item = ToDoList(name, "", check, "")
+        val time = timeTextView1.text.toString()
+        val item = ToDoList(name, time, check, "")
         db.collection("items").add(item).addOnSuccessListener { document ->
             val id = document.id
             item.id = id
@@ -86,7 +105,6 @@ class CreateAndEditTaskActivity : AppCompatActivity() {
             finish()
 
         }
-
     }
     fun removeItem(position: Int) {
         val itemId = DataManager.item[position].id
@@ -97,6 +115,33 @@ class CreateAndEditTaskActivity : AppCompatActivity() {
     fun removeItemFromFirestore(itemId: String) {
         db.collection("items").document(itemId).delete()
     }
+    fun addTime(){
+
+
+
+
+
+
+    }
+    fun changeTime(position: Int) {
+            val timePickerDialog = TimePickerDialog(
+                this,
+                { _, hourOfDay, minute ->
+                    val formattedTime = String.format("%02d:%02d", hourOfDay, minute)
+                    timeTextView1.text = formattedTime
+                    // Flytta dessa två rader hit
+                    DataManager.item[position].time = timeTextView1.text.toString()
+                    val id = DataManager.item[position].id
+                    db.collection("items").document(id).set(DataManager.item[position])
+                },
+                LocalTime.now().hour,
+                LocalTime.now().minute,
+                true
+            )
+            timePickerDialog.show()
+    }
+
+
 
 
 }
