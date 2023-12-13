@@ -11,9 +11,14 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.firestore
 
 class MainActivity : AppCompatActivity() {
     lateinit var recyclerView: RecyclerView
+    lateinit var db : FirebaseFirestore
+    lateinit var adapter: ToDoListRecyclerAdapter
 
     val dropDownList= arrayOf("Daily List","Shopping List")
 
@@ -23,6 +28,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val listSpinner = findViewById<Spinner>(R.id.listSpinner)
+        db = Firebase.firestore
+        loadItems()
 
         val arrayAdapterDIf = ArrayAdapter<String>(this,R.layout.dropdown,dropDownList)
         listSpinner.adapter = arrayAdapterDIf
@@ -53,12 +60,22 @@ class MainActivity : AppCompatActivity() {
 
 
 
+
         taskAddButton.setOnClickListener {
             val intent = Intent(this,CreateAndEditTaskActivity::class.java)
             startActivity(intent)
 
         }
 
+    }
+    fun loadItems() {
+        db.collection("items").get().addOnSuccessListener { documents ->
+            for (document in documents) {
+                val item = document.toObject(ToDoList::class.java)
+                DataManager.item.add(item)
+            }
+            recyclerView.adapter?.notifyDataSetChanged()
+        }
     }
 
 
