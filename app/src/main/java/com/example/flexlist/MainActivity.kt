@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val listSpinner = findViewById<Spinner>(R.id.listSpinner)
         db = Firebase.firestore
+
         loadItems()
 
         val arrayAdapterDIf = ArrayAdapter<String>(this,R.layout.dropdown,dropDownList)
