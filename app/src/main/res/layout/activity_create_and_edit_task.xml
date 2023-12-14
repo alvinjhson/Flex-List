@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#BED1D4"
+    android:background="#FFFFFF"
     tools:context=".CreateAndEditTaskActivity">
 
     <ImageView
@@ -21,40 +21,33 @@
 
     <Button
         android:id="@+id/saveButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="67dp"
+        android:layout_height="41dp"
+        android:background="@drawable/button_design"
+        android:fontFamily="@font/inter_extralight"
         android:text="Save"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.953"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextText"
-        app:layout_constraintVertical_bias="0.433" />
+        app:layout_constraintVertical_bias="0.93" />
 
     <ImageButton
         android:id="@+id/removeItemButton"
-        android:layout_width="61dp"
-        android:layout_height="60dp"
+        android:layout_width="25dp"
+        android:layout_height="33dp"
         android:background="@android:color/transparent"
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.946"
+        app:layout_constraintHorizontal_bias="0.958"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.974"
+        app:layout_constraintVertical_bias="0.022"
         app:srcCompat="@drawable/trashcan" />
-
-    <Button
-        android:id="@+id/setTimeButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Time"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.695" />
 
     <ImageView
         android:id="@+id/imageView8"
@@ -68,7 +61,7 @@
         app:srcCompat="@drawable/line_5" />
 
     <ImageButton
-        android:id="@+id/imageButton2"
+        android:id="@+id/backImageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="#364958"
@@ -87,7 +80,7 @@
         android:layout_marginTop="8dp"
         android:fontFamily="@font/inter_extralight"
         android:text="TextView"
-        android:textColor="#C9E4CA"
+        android:textColor="#EEF4EF"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="@+id/imageView7"
         app:layout_constraintHorizontal_bias="0.498"
@@ -122,6 +115,7 @@
         android:id="@+id/editTextText"
         android:layout_width="200dp"
         android:layout_height="58dp"
+        android:backgroundTint="@android:color/white"
         android:ems="10"
         android:fontFamily="@font/inter_extralight"
         android:hint="ToDo"
@@ -131,7 +125,6 @@
         android:textColorHint="#F8FAF8"
         android:textColorLink="#F3EFEF"
         android:textSize="30sp"
-        android:backgroundTint="@android:color/white"
         app:layout_constraintBottom_toBottomOf="@+id/imageView6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"

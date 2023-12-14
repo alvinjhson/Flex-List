@@ -3,9 +3,11 @@ package com.example.flexlist
 import android.app.Activity
 import android.app.TimePickerDialog
 import android.content.Intent
+import android.media.Image
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
@@ -23,8 +25,6 @@ class CreateAndEditTaskActivity : AppCompatActivity() {
 
     lateinit var db : FirebaseFirestore
 
-
-
     lateinit var nameEditText: EditText
     lateinit var timeImageView : ImageView
     lateinit var timeTextView1 : TextView
@@ -40,13 +40,19 @@ class CreateAndEditTaskActivity : AppCompatActivity() {
         nameEditText = findViewById(R.id.editTextText)
         timeImageView = findViewById(R.id.timeImageView)
         timeTextView1 = findViewById(R.id.timeTextView1)
+
+
         val saveButton = findViewById<Button>(R.id.saveButton)
+        val backButton = findViewById<ImageButton>(R.id.backImageButton)
         val itemPosistion = intent.getIntExtra(ITEM_POSISTION_KEY, POSISTION_NOT_SET)
-        val setTime = findViewById<Button>(R.id.setTimeButton)
 
         if (itemPosistion != POSISTION_NOT_SET) {
             displayItem(itemPosistion)
             saveButton.setOnClickListener {
+                editItem(itemPosistion)
+
+            }
+            backButton.setOnClickListener {
                 editItem(itemPosistion)
 
             }
@@ -75,6 +81,10 @@ class CreateAndEditTaskActivity : AppCompatActivity() {
 
                 addItem()
             }
+            backButton.setOnClickListener {
+               finish()
+
+            }
         }
 
     }
@@ -82,7 +92,6 @@ class CreateAndEditTaskActivity : AppCompatActivity() {
         DataManager.item[position].itemName = nameEditText.text.toString()
         val id = DataManager.item[position].id
         db.collection("items").document(id).set(DataManager.item[position])
-
         finish()
     }
 
@@ -103,7 +112,6 @@ class CreateAndEditTaskActivity : AppCompatActivity() {
             db.collection("items").document(id).set(item)
             DataManager.item.add(item)
             finish()
-
         }
     }
     fun removeItem(position: Int) {
@@ -115,21 +123,12 @@ class CreateAndEditTaskActivity : AppCompatActivity() {
     fun removeItemFromFirestore(itemId: String) {
         db.collection("items").document(itemId).delete()
     }
-    fun addTime(){
-
-
-
-
-
-
-    }
     fun changeTime(position: Int) {
             val timePickerDialog = TimePickerDialog(
                 this,
                 { _, hourOfDay, minute ->
                     val formattedTime = String.format("%02d:%02d", hourOfDay, minute)
                     timeTextView1.text = formattedTime
-                    // Flytta dessa två rader hit
                     DataManager.item[position].time = timeTextView1.text.toString()
                     val id = DataManager.item[position].id
                     db.collection("items").document(id).set(DataManager.item[position])
@@ -140,8 +139,5 @@ class CreateAndEditTaskActivity : AppCompatActivity() {
             )
             timePickerDialog.show()
     }
-
-
-
 
 }
