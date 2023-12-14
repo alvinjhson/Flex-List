@@ -41,12 +41,8 @@ class MainActivity : AppCompatActivity() {
                 id: Long
             ) {
                 Toast.makeText(applicationContext,"Selected List is " + dropDownList[position],Toast.LENGTH_SHORT).show()
-
-
             }
-
             override fun onNothingSelected(parent: AdapterView<*>?) {
-
             }
         }
 
@@ -58,15 +54,10 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = ToDoListRecyclerAdapter(this,DataManager.item)
 
-
-
-
         taskAddButton.setOnClickListener {
             val intent = Intent(this,CreateAndEditTaskActivity::class.java)
             startActivity(intent)
-
         }
-
     }
     fun loadItems() {
         db.collection("items").get().addOnSuccessListener { documents ->
@@ -77,6 +68,7 @@ class MainActivity : AppCompatActivity() {
             recyclerView.adapter?.notifyDataSetChanged()
         }
     }
+
 
 
 

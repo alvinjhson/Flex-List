@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
-import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
@@ -18,7 +17,7 @@ class ToDoListRecyclerAdapter(val context: Context, var lists: List<ToDoList>)  
 
     inner class ViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
         var itemNameView = itemView.findViewById<TextView>(R.id.itemNameTextView)
-        var checkBox = itemView.findViewById<CheckBox>(R.id.itemNameCheckBox)
+        var checkBox = itemView.findViewById<CheckBox>(R.id.itemCheckBox)
         var itemPosistion = 0
         var timeTextView = itemView.findViewById<TextView>(R.id.timeTextView2)
 
@@ -29,8 +28,6 @@ class ToDoListRecyclerAdapter(val context: Context, var lists: List<ToDoList>)  
                 intent.putExtra(ITEM_POSISTION_KEY,itemPosistion)
                 context.startActivity(intent)
             }
-
-
 
         }
 
