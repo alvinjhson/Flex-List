@@ -13,6 +13,8 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 import java.text.FieldPosition
@@ -24,6 +26,7 @@ const val POSISTION_NOT_SET = -1
 class CreateAndEditTaskActivity : AppCompatActivity() {
 
     lateinit var db : FirebaseFirestore
+    lateinit var auth : FirebaseAuth
 
     lateinit var nameEditText: EditText
     lateinit var timeImageView : ImageView
@@ -34,7 +37,7 @@ class CreateAndEditTaskActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_and_edit_task)
 
-
+        auth = Firebase.auth
         db = Firebase.firestore
         val delete = findViewById<ImageButton>(R.id.removeItemButton)
         nameEditText = findViewById(R.id.editTextText)
@@ -89,9 +92,12 @@ class CreateAndEditTaskActivity : AppCompatActivity() {
 
     }
     fun editItem(position: Int) {
+        val user = auth.currentUser
         DataManager.item[position].itemName = nameEditText.text.toString()
         val id = DataManager.item[position].id
-        db.collection("items").document(id).set(DataManager.item[position])
+        if (user != null) {
+            db.collection("users").document(user.uid).collection("items").document(id).set(DataManager.item[position])
+        }
         finish()
     }
 
@@ -105,17 +111,27 @@ class CreateAndEditTaskActivity : AppCompatActivity() {
         val name = nameEditText.text.toString()
         val check = false
         val time = timeTextView1.text.toString()
-        val item = ToDoList(name, time, check, "")
-        db.collection("items").add(item).addOnSuccessListener { document ->
+        val item = ToDoList(name, time, check, "","")
+        val user = auth.currentUser
+        if (user == null) {
+            return
+        }
+        db.collection("users").document(user.uid)
+            .collection("items").add(item).addOnSuccessListener { document ->
             val id = document.id
             item.id = id
-            db.collection("items").document(id).set(item)
+            db.collection("users").document(user.uid).collection("items").document(id).set(item)
             DataManager.item.add(item)
             finish()
         }
     }
     fun removeItem(position: Int) {
         val itemId = DataManager.item[position].id
+        val user = auth.currentUser
+        if (user == null) {
+            return
+        }
+        db.collection("users").document(user.uid).collection("items").document(itemId).delete()
         removeItemFromFirestore(itemId)
         DataManager.item.removeAt(position)
         finish()
@@ -124,6 +140,7 @@ class CreateAndEditTaskActivity : AppCompatActivity() {
         db.collection("items").document(itemId).delete()
     }
     fun changeTime(position: Int) {
+        val user = auth.currentUser
             val timePickerDialog = TimePickerDialog(
                 this,
                 { _, hourOfDay, minute ->
@@ -131,7 +148,9 @@ class CreateAndEditTaskActivity : AppCompatActivity() {
                     timeTextView1.text = formattedTime
                     DataManager.item[position].time = timeTextView1.text.toString()
                     val id = DataManager.item[position].id
-                    db.collection("items").document(id).set(DataManager.item[position])
+                    if (user != null) {
+                        db.collection("users").document(user.uid).collection("items").document(id).set(DataManager.item[position])
+                    }
                 },
                 LocalTime.now().hour,
                 LocalTime.now().minute,
