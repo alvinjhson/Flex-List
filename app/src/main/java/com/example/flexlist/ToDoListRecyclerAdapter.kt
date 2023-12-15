@@ -10,6 +10,8 @@ import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 
@@ -18,6 +20,7 @@ class ToDoListRecyclerAdapter(val context: Context, var lists: List<ToDoList>)  
 
         var layoutInflater = LayoutInflater.from(context)
         lateinit var db : FirebaseFirestore
+        lateinit var auth : FirebaseAuth
 
 
     inner class ViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
@@ -76,10 +79,15 @@ class ToDoListRecyclerAdapter(val context: Context, var lists: List<ToDoList>)  
         }
     }
     fun updateDatabase(itemList: ToDoList) {
+        auth = Firebase.auth
+        val user = auth.currentUser
         db = Firebase.firestore
+
         // Uppdatera databasen med det nya värdet för checkboxen
         val id = itemList.id
-        db.collection("items").document(id).set(itemList)
+        if (user != null) {
+            db.collection("users").document(user.uid).collection("items").document(id).set(itemList)
+        }
     }
 
 
